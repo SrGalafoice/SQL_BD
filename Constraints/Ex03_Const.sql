@@ -6,10 +6,10 @@ CREATE TABLE Mae (
 ID_Mae		INT				NOT NULL 	IDENTITY(1001,1),
 nome		VARCHAR(60)		NOT NULL,
 logradouro_endereco	VARCHAR(100)	NOT NULL,
-numero_endereco		INT				NOT NULL 	CHECK(numero > 0),
-cep_endereco			CHAR(8)			NOT NULL 	CHECK(cep(len) = 8),
+numero_endereco		INT				NOT NULL 	CHECK(numero_endereco > 0),
+cep_endereco			CHAR(8)			NOT NULL 	CHECK(LEN(cep_endereco) = 8),
 complemento_endereco	VARCHAR(200)	NOT NULL,
-telefone	CHAR(10)		NOT NULL 	CHECK(telefone(len) = 10),
+telefone	CHAR(10)		NOT NULL 	CHECK(LEN(telefone) = 10),
 data_nasc	DATE			NOT NULL
 PRIMARY KEY (ID_Mae)
 )
@@ -19,7 +19,7 @@ CREATE TABLE Medico (
 CRM_numero		INT				NOT NULL,
 CRM_UF			CHAR(2)			NOT NULL,
 nome			VARCHAR(60)		NOT NULL,
-celular			CHAR(11)		NOT NULL 	UNIQUE 	CHECK(celular(len) = 11),
+celular			CHAR(11)		NOT NULL 	UNIQUE 	CHECK(LEN(celular) = 11),
 especialidade	VARCHAR(30)		NOT NULL
 PRIMARY KEY(CRM_numero, CRM_UF)
 )
