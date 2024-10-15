@@ -33,6 +33,21 @@ altura	DECIMAL(7,2)	NOT NULL 	CHECK(altura  > 0),
 peso	DECIMAL(4,3)	NOT NULL		CHECK(peso > 0),
 ID_Mae	INT	NOT NULL
 PRIMARY KEY (ID_Bebe)
-FOREIGN KEY (ID_Mae) REFERENCES mae(ID_Mae)
+FOREIGN KEY (ID_Mae) REFERENCES Mae(ID_Mae)
 )
 GO
+
+/* Para a tabela mãe:
+- O ID é auto incremental, iniciando em 1001 e indo de 1 em 1
+- Número de porta não pode ser negativo
+- CEP deve ter 8 dígitos
+- Telefone deve ter 10 dígitos
+Para a tabela medico:
+- Celular deve ter 11 dígitos
+- Celular não pode repetir
+Para a tabela bebe:
+- O ID é auto incremental, iniciando em 1 e indo de 1 em 1
+- Se não preenchida, a data de nascimento é o dia de hoje
+- Altura não pode ser negativa
+- Peso não pode ser negativo
+*/
