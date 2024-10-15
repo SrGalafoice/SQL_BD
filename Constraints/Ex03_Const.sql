@@ -21,7 +21,7 @@ CRM_UF			CHAR(2)			NOT NULL,
 nome			VARCHAR(60)		NOT NULL,
 celular			CHAR(11)		NOT NULL 	UNIQUE 	CHECK(LEN(celular) = 11),
 especialidade	VARCHAR(30)		NOT NULL
-PRIMARY KEY(CRM_numero, CRM_UF)
+PRIMARY KEY (CRM_numero, CRM_UF)
 )
 GO
 
