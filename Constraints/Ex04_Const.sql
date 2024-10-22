@@ -44,7 +44,7 @@ PRIMARY KEY (ID)
 GO
 
 CREATE TABLE Categoria(
-ID	INT	NOT NULL	IDENTITY(1,1)
+ID	INT	NOT NULL	IDENTITY,
 Categoria	VARCHAR(10)	NOT NULL CHECK(Categoria IN ('Estagiario', 'Nível 1', 'Nível 2', 'Nível 3')),
 Valor_Hora	DECIMAL(4,2)	NOT NULL	CHECK(Valor_Hora > 0)
 PRIMARY KEY (ID)
