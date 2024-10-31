@@ -21,21 +21,9 @@ FOREIGN KEY (ClienteID) REFERENCES Cliente(ID)
 )
 GO
 
-CREATE TABLE Funcionario(
-ID	INT	NOT NULL		IDENTITY(101, 1),
-Nome	VARCHAR(100)	NOT NULL,
-Logradouro	VARCHAR(200)	NOT NULL,
-Numero	INT	NOT NULL	CHECK(Numero > 0),
-Telefone	CHAR(11)	NOT NULL	CHECK(LEN(Telefone) >= 10),
-Categoria_Habilitacao	VARCHAR(2)	NOT NULL	CHECK(Categoria_Habilitacao IN ('A', 'B', 'C', 'D', 'E')),
-CategoriaID	INT	NOT NULL
-PRIMARY KEY (ID)
-FOREIGN KEY (CategoriaID) REFERENCES Categoria(ID)
-)
-GO
 
 CREATE TABLE Peca(
-ID	INT	NOT NULL		IDENTITY(3411, 7)
+ID	INT	NOT NULL		IDENTITY(3411, 7),
 Nome	VARCHAR(30)	NOT NULL	UNIQUE,
 Preco	DECIMAL(4,2)	NOT NULL	CHECK(Preco > 0),
 Estoque	INT	NOT NULL	CHECK(Estoque >= 10)
@@ -47,12 +35,25 @@ CREATE TABLE Categoria(
 ID	INT	NOT NULL	IDENTITY,
 Categoria	VARCHAR(10)	NOT NULL CHECK(Categoria IN ('Estagiario', 'Nível 1', 'Nível 2', 'Nível 3')),
 Valor_Hora	DECIMAL(4,2)	NOT NULL	CHECK(Valor_Hora > 0)
-PRIMARY KEY (ID)
+PRIMARY KEY (ID),
 CONSTRAINT chk_Cat_Val
-	CHECK(Categoria = 'Estagiario' AND Valor_Hora = 15.00) OR 
+	CHECK((Categoria = 'Estagiario' AND Valor_Hora = 15.00) OR 
 	(Categoria = 'Nível 1' AND Valor_Hora = 25.00) OR 
 	(Categoria = 'Nível 2' AND Valor_Hora = 35.00) OR 
 	(Categoria = 'Nível 3' AND Valor_Hora = 50.00))
+)
+GO
+
+CREATE TABLE Funcionario(
+ID	INT	NOT NULL		IDENTITY(101, 1),
+Nome	VARCHAR(100)	NOT NULL,
+Logradouro	VARCHAR(200)	NOT NULL,
+Numero	INT	NOT NULL	CHECK(Numero > 0),
+Telefone	CHAR(11)	NOT NULL	CHECK(LEN(Telefone) >= 10),
+Categoria_Habilitacao	VARCHAR(2)	NOT NULL	CHECK(Categoria_Habilitacao IN ('A', 'B', 'C', 'D', 'E')),
+CategoriaID	INT	NOT NULL
+PRIMARY KEY (ID)
+FOREIGN KEY (CategoriaID) REFERENCES Categoria(ID)
 )
 GO
 
@@ -79,7 +80,7 @@ Tempo	INT	NOT NULL	CHECK(Tempo > 0),
 VeiculoPlaca	CHAR(7)	NOT NULL,
 FuncionarioID	INT	NOT NULL,
 PecaID	INT	NOT NULL,
-PRIMARY KEY (Data)
+PRIMARY KEY (Data),
 FOREIGN KEY (VeiculoPlaca) REFERENCES Veiculo(Placa),
 FOREIGN KEY (FuncionarioID) REFERENCES Funcionario(ID),
 FOREIGN KEY (PecaID) REFERENCES Peca(ID)
