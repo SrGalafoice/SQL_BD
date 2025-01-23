@@ -44,7 +44,7 @@ INSERT INTO users(nome, username, senha, email) VALUES
 
 SELECT * FROM users
 --DELETE users
---DBCC CHECKIDENT ('Users', RESEED, 0)
+--DBCC CHECKIDENT ('users', RESEED, 0)
 
 
 INSERT INTO projects(nome, descricao, date) VALUES 
@@ -52,6 +52,8 @@ INSERT INTO projects(nome, descricao, date) VALUES
 ('Manutenção PC''s', 'Manutenção PC''s','2014-09-06'),
 ('Auditoria', NULL, '2014-09-07') 
 SELECT * FROM projects
+--DELETE projects
+--DBCC CHECKIDENT ('projects', RESEED, 10000)
 
 INSERT INTO users_has_projects (users_ID, projects_ID)  VALUES
 (1 , 10001),
@@ -62,23 +64,28 @@ INSERT INTO users_has_projects (users_ID, projects_ID)  VALUES
 SELECT * FROM users_has_projects
 
 
-DELETE users
-TRUNCATE TABLE users
-DELETE PROJECTS
-TRUNCATE TABLE projects
+--DELETE users
+--TRUNCATE TABLE users
+--DELETE projects
+--TRUNCATE TABLE projects
+
 -- O projeto de Manutenção atrasou, mudar a data para 12/09/2014
 UPDATE projects SET date = '2014-09-12'
 WHERE nome = 'Manutenção PC''s'
+SELECT * FROM projects
 
 -- O username de aparecido (usar o nome como condição de mudança) está feio, mudar para Rh_cido
 UPDATE users set username = 'Rh_cido' 
 WHERE nome = 'Aparecido'
+SELECT * FROM users
 
 -- Mudar o password do username Rh_maria (usar o username como condição de mudança)
 -- para 888@*, mas a condição deve verificar se o password dela ainda é 123mudar
 UPDATE users SET senha = '888@'
 WHERE username = 'Rh_maria' AND senha = '123mudar'
+SELECT * FROM users
 
 --O user de id 2 não participa mais do projeto 10002, removê-lo da associativa
 DELETE users_has_projects 
 WHERE users_id = 2 AND projects_id = 10002
+SELECT * FROM users_has_projects
