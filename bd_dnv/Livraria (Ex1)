@@ -1,0 +1,83 @@
+CREATE DATABASE Livraria
+GO
+USE Livraria
+GO
+
+CREATE TABLE Livro(
+Codigo INTEGER NOT NULL IDENTITY(100001, 100),
+Nome varchar(200) NOT NULL,
+Lingua VARCHAR(10) NOT NULL DEFAULT('PT-BR'),
+Ano INTEGER NOT NULL CHECK((Ano) >= 1990)
+PRIMARY KEY (Codigo)
+)
+GO
+
+CREATE TABLE Autor(
+ID_Autor INTEGER NOT NULL IDENTITY(2351, 1),
+Nome VARCHAR(100) UNIQUE NOT NULL,
+Data_nasc DATE NOT NULL,
+Pais_nasc VARCHAR(50) NOT NULL CHECK((Pais_nasc) = 'Brasil' OR (Pais_nasc) = 'Estados Unidos' OR (Pais_nasc) = 'Inglaterra' OR (Pais_nasc) = 'Alemanha') ,
+Biografia VARCHAR(255) NOT NULL
+PRIMARY KEY (ID_Autor)
+)
+GO
+
+CREATE TABLE Editora(
+ID_Editora INTEGER NOT NULL IDENTITY(491, 16),
+Nome VARCHAR(70) UNIQUE NOT NULL,
+Telefone VARCHAR(11) NOT NULL CHECK(LEN(Telefone) >= 10),
+Logradouro_Endereco VARCHAR(200) NOT NULL,
+Numero_Endereco INTEGER NOT NULL CHECK((Numero_Endereco) > 0),
+CEP_Endereco char(8) CHECK(LEN(CEP_Endereco) = 8),
+Complemento_Endereco VARCHAR(255) NOT NULL
+PRIMARY KEY (ID_Editora)
+)
+GO
+
+CREATE TABLE Livro_Autor(
+LivroCodigo INTEGER NOT NULL,
+AutorID_Autor INTEGER NOT NULL
+
+PRIMARY KEY(LivroCodigo, AutorID_Autor)
+
+FOREIGN KEY (LivroCodigo) REFERENCES Livro(Codigo),
+FOREIGN KEY (AutorID_Autor) REFERENCES Autor(ID_Autor)
+)
+GO
+CREATE TABLE Edicao(
+ISBN char(13) NOT NULL UNIQUE CHECK(LEN(ISBN) = 13),
+Preco DECIMAL(4,2) NOT NULL CHECK((Preco) > 0),
+Ano INTEGER NOT NULL CHECK((Ano) >= 1993),
+Numero_Paginas INTEGER NOT NULL CHECK((Numero_Paginas) >= 15),
+Qtd_Estoque INTEGER NOT NULL
+PRIMARY KEY(ISBN)
+)
+GO
+
+CREATE TABLE Editora_Edicao_Livro(
+EditoraID_Editora INTEGER NOT NULL,
+EdicaoISBN char(13)  NOT NULL,
+LivroCodigo INTEGER NOT NULL 
+PRIMARY KEY(LivroCodigo, EdicaoISBN, EditoraID_Editora)
+FOREIGN KEY (EditoraID_Editora) REFERENCES Editora(ID_Editora),
+FOREIGN KEY (EdicaoISBN) REFERENCES Edicao(ISBN),
+FOREIGN KEY (LivroCodigo) REFERENCES Livro(Codigo)
+)
+GO
+
+--Foram delimitadas as seguintes restrições:
+--O código do livro é auto incremental partindo de 100001 e incrementando de 100 em 100
+--O código do autor é auto incremental partindo de 2351 e incrementando de 1 em 1
+--O código da editora é auto incremental partindo de 491 e incrementando de 16 em 16
+--Por lei, o ISBN deve ter 13 dígitos
+--O nome do autor é único
+--O nome da editora é único
+--Se não preenchida, a língua dos livros é ‘PT-BR’
+--Não são cadastrados livros de ano inferior a 1990
+--Não são cadastrados livros de edição inferior a 1993
+--Não existem preços negativos
+--Não existem livros com menos de 15 páginas
+--Não existem Números de Endereços negativos
+--Telefones são fixos devem ter 10 dígitos
+--No Brasil, todo CEP tem 8 caracteres
+--Só são cadastrados livros de autores do Brasil, Estados Unidos, Inglaterra e Alemanha
