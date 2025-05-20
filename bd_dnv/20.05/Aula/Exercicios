@@ -1,0 +1,39 @@
+--DATABASE: https://pastebin.com/GZBh1ArB
+
+--Consultar Nome, Logradouro, Numero e Complemento do cliente, Placa, Marca, Modelo, Cor e Ano_Modelo 
+--dos carros cadastrados cujo Ano de Fabricação é Maior ou igual a 2010 (Ordenado por nome de Cliente)
+SELECT Nome, Logradouro, Numero, Complemento, Placa, Marca, Modelo, Cor, Ano_Modelo
+FROM Cliente cl INNER JOIN Veiculo ve
+ON cl.ID = ve.ClienteID
+WHERE ve.Ano_Fabricacao >= 2010
+ORDER BY cl.Nome
+ 
+--Consultar os telefones do cliente cujo veiculo tem placa AAA0A00. Aplicar máscara para sair (XX)XXXXX-XXXX
+SELECT '(' + SUBSTRING(tc.Telefone,1,2) + ')' + SUBSTRING(tc.Telefone,3,4) + '-' + SUBSTRING(tc.Telefone,8,4)
+FROM Telefone_Cliente tc INNER JOIN Cliente cl 
+ON tc.ClienteID = cl.ID
+INNER JOIN Veiculo ve
+ON ve.ClienteID = cl.ID
+WHERE ve.Placa = 'AAA0A00'
+ 
+--Consultar Nome, Logradouro, Numero e Complemento dos clientes que não tem telefone cadastrado
+SELECT Nome, Logradouro, Numero, Complemento 
+FROM Cliente cl LEFT OUTER JOIN Telefone_Cliente tc
+ON cl.ID = tc.ClienteID
+WHERE tc.Telefone IS NULL
+ 
+--Consultar Nome, Logradouro, Numero e Complemento dos clientes que fizeram reparo hoje (Remover linhas duplicadas)
+SELECT DISTINCT Nome, Logradouro, Numero, Complemento
+FROM Cliente cl INNER JOIN Veiculo ve
+ON cl.ID = ve.ClienteID
+INNER JOIN Reparo re
+ON re.VeiculoPlaca = ve.Placa
+WHERE re.Dt = '20-05-2025'
+
+--Consultar nome, preço e estoque das peças que ainda não foram utilizadas em reparos, 
+--ordenadas pelo preço decrescente
+SELECT pc.Nome, pc.Preco, pc.Estoque
+FROM Peca pc LEFT OUTER JOIN Reparo r
+ON pc.ID = r.PecaID
+WHERE r.PecaID IS NULL
+ORDER BY pc.Preco DESC
