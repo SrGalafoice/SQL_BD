@@ -1,0 +1,37 @@
+--DATABASE: https://github.com/SrGalafoice/SQL_BD/blob/main/bd_dnv/13.05/Ex_DDL_DML_SQL.sql
+
+USE UsuProj
+GO
+
+SELECT * FROM users
+SELECT * FROM Projects
+SELECT * FROM users_has_projects
+--a) Adicionar User
+--(6; Joao; Ti_joao; 123mudar; joao@empresa.com)
+INSERT INTO users VALUES('Joao', 'Ti_joao', '123mudar', 'joao@empresa.com')
+
+--b) Adicionar Project
+--(10004; Atualização de Sistemas; Modificação de Sistemas Operacionais nos PC's; 12/09/2014)
+INSERT INTO projects VALUES('Atualização de Sistemas', 'Modificação de Sistemas Operacionais nos PC''s', '2014-09-12')
+
+--c) Consultar:
+--1) Id, Name e Email de Users, Id, Name, Description e Data de Projects, dos usuários que
+--participaram do projeto Name Re-folha
+
+SELECT us.ID, us.nome AS Nome_Usuario, us.email, pro.ID AS ID_Projeto, pro.nome AS Nome_Projeto, pro.descricao, pro.date
+FROM users us INNER JOIN users_has_projects uhp
+ON us.ID = uhp.users_ID INNER JOIN projects pro
+ON pro.ID = uhp.projects_ID
+WHERE pro.nome = 'Re-folha'
+
+--2) Name dos Projects que não tem Users
+SELECT pro.nome 
+FROM projects pro LEFT OUTER JOIN users_has_projects uhp
+ON pro.ID = uhp.projects_ID
+WHERE uhp.users_ID IS NULL
+
+--3) Name dos Users que não tem Projects
+SELECT us.nome 
+FROM users us LEFT OUTER JOIN users_has_projects uhp
+ON us.ID = uhp.users_ID
+WHERE uhp.projects_ID IS NULL
